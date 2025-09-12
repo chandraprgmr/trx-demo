@@ -1,10 +1,26 @@
 .anim {
-    position: absolute;
-    will-change: transform;
-    animation: marquee 15s linear infinite ;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  gap: 1.25rem; /* set sesuai mr-5 */
+  align-items: center;
+  will-change: transform;
+  animation: marquee 15s linear infinite;
 }
 
+/* pause on hover */
 .anim:hover {
-    animation-play-state: paused;
-    
+  animation-play-state: paused;
+}
+
+/* animate from 0 -> -50% of the element width
+   (works when content is duplicated: [items][items]) */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }

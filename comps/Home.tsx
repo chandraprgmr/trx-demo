@@ -11,6 +11,16 @@ interface HomeProps {
 }
 
 const Home = ({ products, bannerData }: HomeProps) => {
+  const [sortOrder, setSortOrder] = useState(""); // "low" | "high"
+
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortOrder === "low") {
+      return a.price - b.price;
+    } else if (sortOrder === "high") {
+      return b.price - a.price;
+    }
+    return 0; // default no sort
+  });
 
   return (
     <main>
@@ -25,16 +35,28 @@ const Home = ({ products, bannerData }: HomeProps) => {
           Best Selling Headphones
         </h1>
         {/* <p className=" text-base text-secondary">Best in the Market</p> */}
+
+        {/* === SORT DROPDOWN === */}
+        <div className="flex justify-end mb-4">
+          <select
+            className="border rounded my-2 px-2 py-1"
+            onChange={(e) => setSortOrder(e.target.value)}
+          >
+            <option value="">Sort by price</option>
+            <option value="low">Low to High</option>
+            <option value="high">High to Low</option>
+          </select>
+        </div>
       </section>
 
       {/* === SHOW PRODUCTS  */}
       <section
-        className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4
+        className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3
        lg:mx-20 overflow-hidden
       "
       >
         {/* === MAP PRODUCTS  */}
-        {products?.map((products: ProductsTypes) => {
+        {sortedProducts?.map((products: ProductsTypes) => {
           return <Products key={products._id} products={products} />;
         })}
       </section>

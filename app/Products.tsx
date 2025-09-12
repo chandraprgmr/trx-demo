@@ -64,13 +64,23 @@ const Products = ({ products, gap }: ProductsProps) => {
 
       {/* === NAME & PRICE */}
       <section className=" mx-1 sm:mx-2 flex mt-2 items-center justify-between">
-        <nav className=" text-sm font-normal sm:font-medium">
-          <p> {products.name} </p>
-          <div className=" flex gap-3">
-            <span className=" text-sm text-lightGray line-through ">
-              ${products.oldPrice}
-            </span>
-            <b className=" text-zinc-900 "> ${products.price} </b>
+        <nav className="text-sm font-normal sm:font-medium">
+          <p>{products.name}</p>
+          <div className="flex gap-3">
+            {products.oldPrice && (
+              <span className="text-sm text-lightGray line-through">
+                {new Intl.NumberFormat("ja-JP", {
+                  style: "currency",
+                  currency: "JPY",
+                }).format(products.oldPrice)}
+              </span>
+            )}
+            <b className="text-zinc-900">
+              {new Intl.NumberFormat("ja-JP", {
+                style: "currency",
+                currency: "JPY",
+              }).format(products.price)}
+            </b>
           </div>
         </nav>
 
@@ -85,13 +95,12 @@ const Products = ({ products, gap }: ProductsProps) => {
               }}
               className={`h-6 stroke-lightGray hover:stroke-love self-start 
           sm:hover:fill-love transition-colors cursor-pointer
-          duration-1000 text-lightDim1 z-10 ${
-            window.localStorage.trxfav &&
-            JSON.parse(localStorage.trxfav).filter(
-              (each: ProductsTypes) => each._id == products._id
-            ).length >= 1 &&
-            "fill-love stroke-love"
-          }`}
+          duration-1000 text-lightDim1 z-10 ${window.localStorage.trxfav &&
+                JSON.parse(localStorage.trxfav).filter(
+                  (each: ProductsTypes) => each._id == products._id
+                ).length >= 1 &&
+                "fill-love stroke-love"
+                }`}
               viewBox="0 0 24 24"
               fill="none"
               stroke="none"
@@ -113,10 +122,9 @@ const Products = ({ products, gap }: ProductsProps) => {
             viewBox="0 0 24 24"
             stroke="currentColor"
             className={`w-6 h-6 cursor-pointer hidden sm:block text-lightGray
-            hover:stroke-dim stroke-[1.5] ${
-              cartItems.filter((item: any) => item._id == products._id)
+            hover:stroke-dim stroke-[1.5] ${cartItems.filter((item: any) => item._id == products._id)
                 .length >= 1 && "text-dim stroke-[2]"
-            }`}
+              }`}
             onClick={() => onAdd(products, 1)}
           >
             <path
